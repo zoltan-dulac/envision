@@ -1,0 +1,10 @@
+Write accessibility alt text for this e-commerce product image.
+
+Product: {{productName}}
+Filename: {{filename}}
+Maximum: {{maxChars}} characters
+
+Context hint:
+{{context}}
+
+Describe the visible product concisely and objectively. Use the product name supplied above. Mention visually meaningful color, packaging, orientation, and visible identifying text when useful. Do not invent facts, make marketing claims, or begin with "image of". Return only the alt text, no quotes or explanation. Keep it at or below {{maxChars}} characters.
