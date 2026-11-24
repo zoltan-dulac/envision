@@ -488,8 +488,19 @@ async function exportToExcel(images, outputFile, includeImageTextInfo) {
     return acc;
   }, {});
 
-  for (const [productName, imgs] of Object.entries(grouped)) {
-    const sheet = workbook.addWorksheet(productName, {
+  // CHANGE: Create worksheet names as `${index}-${directoryName}` with two-digit index
+  const productNames = Object.keys(grouped);
+  for (let i = 0; i < productNames.length; i++) {
+    const productName = productNames[i];
+    const imgs = grouped[productName];
+    const sheetIndex = String(i + 1).padStart(2, '0');
+    // Excel worksheet names max 31 chars; truncate if needed
+    let worksheetName = `${sheetIndex}-${productName}`;
+    if (worksheetName.length > 31) {
+      worksheetName = worksheetName.slice(0, 31);
+    }
+
+    const sheet = workbook.addWorksheet(worksheetName, {
       properties: { tabColor: { argb: 'FFC0000' } },
       views: [{ state: 'frozen', ySplit: 1 }],
     });
@@ -572,6 +583,7 @@ async function exportToExcel(images, outputFile, includeImageTextInfo) {
   await workbook.xlsx.writeFile(outputFile);
   console.log(`Excel file saved to ${outputFile}`);
 }
+
 
 // --- Main CLI ---
 async function main() {
